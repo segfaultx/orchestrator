@@ -1,0 +1,58 @@
+name: Test A
+
+sequence:
+  steps:
+
+    - type: data
+      name: Datenbank bereinigen (start)
+      action: /mysql/wordpress/cleanup.sql
+      target: localhost
+      options:
+        dbType: mysql
+        dbUsername: wordpress
+        dbPassword: wordpress
+        dbName: wordpress
+
+    - type: if
+      name: Prüfen, ob Sicherheitsfrage existiert (register)
+      action: check security question exists
+      target: localhost
+      options:
+        then:
+          type: user_interaction
+          name: Bei Wordpress registrieren
+          action: wp-registration-security-question
+        else:
+          type: user_interaction
+          name: Bei Wordpress registrieren
+          action: wp-registration
+
+    - type: user_interaction
+      name: Admin schaltet Nutzer frei
+      action: wp-approve-user
+      target: localhost
+
+    - type: if
+      name: Prüfen, ob Sicherheitsfrage existiert (login)
+      action: check security question exists
+      target: localhost
+      options:
+        then:
+          type: user_interaction
+          name: Nutzer loggt sich mit neuem Passwort ein und ersetzt es durch eigenes
+          action: wp-user-login-with-new-pw-security-question
+        else:
+          type: user_interaction
+          name: Nutzer loggt sich mit neuem Password und Sicherheitsfrage ein und ersetzt es durch eigenes
+          action: wp-user-login-with-new-pw
+
+    - type: data
+      name: Datenbank bereinigen (end)
+      action: /mysql/wordpress/cleanup.sql
+      target: localhost
+      options:
+        dbType: mysql
+        dbUsername: wordpress
+        dbPassword: wordpress
+        dbName: wordpress
+

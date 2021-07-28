@@ -1,0 +1,14 @@
+name: Test B
+
+parallel:
+  steps:
+
+    - type: data
+      name: Datenbank initialisieren (start)
+      action: /postgres/init.sql
+      target: localhost
+      options:
+        dbType: postgresql
+        dbUsername: postgres
+        dbPassword: postgres
+        dbName: postgres

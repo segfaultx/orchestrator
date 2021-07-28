@@ -1,0 +1,19 @@
+name: Test C
+
+parallel:
+  steps:
+    - type: user_interaction
+      name: Bei Wordpress registrieren (hans)
+      action: wp-registration
+      target: localhost
+      options:
+        wp.register.username: hans
+        wp.register.usermail: hans@test.de
+
+    - type: user_interaction
+      name: Bei Wordpress registrieren (franz)
+      action: wp-registration
+      target: localhost
+      options:
+        wp.register.username: franz
+        wp.register.usermail: franz@test.de
